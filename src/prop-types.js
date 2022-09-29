@@ -5,6 +5,5 @@ export const task = {
   heading: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   creationDate: PropTypes.string.isRequired,
-  // deadline: PropTypes.string,
   isComplete: PropTypes.bool.isRequired,
 };

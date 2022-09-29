@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 import {
   useDispatch,
 } from 'react-redux';
-// import dayjs from 'dayjs';
 
 import {
   editTask,
+  removeTask,
 } from '../../store/actions/data';
 import {
   changeTaskFormAction,
@@ -20,7 +20,6 @@ import {
 const initialState = {
   heading: '',
   description: '',
-  // deadline: '',
 };
 
 const TaskForm = ({
@@ -55,32 +54,33 @@ const TaskForm = ({
     dispatch(changeTaskFormAction(null));
   };
 
+  const onRemoveButtonClick = () => {
+    dispatch(removeTask(localState.id));
+  };
+
+  const onCancelButtonClick = () => {
+    dispatch(changeTaskFormAction(null));
+  };
+
   return (
     <form className='task-form' onChange={onFormChange} onSubmit={onFormSubmit}>
       <div className='task-form__input-wrapper'>
         <label className='task-form__input-label' htmlFor="heading">Заголовок:</label>
-        <input className='task-form__input' type="text" name="heading" id="heading" value={localState.heading} onChange={() => { }} />
+        <input className='task-form__input' type="text" name="heading" id="heading" value={localState.heading} onChange={() => { }} required />
       </div>
       <div className='task-form__input-wrapper'>
         <label className='task-form__input-label' htmlFor="description">Описание:</label>
         <textarea className='task-form__input' name="description" id="description" cols="30" rows="10" value={localState.description} onChange={() => { }} />
       </div>
-      {/* <div className='task-form__input-wrapper'>
-        <label className='task-form__input-label' htmlFor="deadline">Выполнить до:</label>
-        <input className='task-form__input' type="datetime-local" name="deadline" id="deadline" value={localState.deadline} onChange={() => { }} />
-      </div> */}
       <ul className='task-card__buttons-list'>
         <li className='task-card__buttons-item'>
-          <button className='task-card__submit-button' type='submit'>Сохранить изменения</button>
+          <button className='task-card__submit-button' type='submit'>Сохранить</button>
         </li>
         <li className='task-card__buttons-item'>
-          <button className='task-card__reset-button' type='reset'>Очистить форму</button>
+          <button className='task-card__cancel-button' type='button' onClick={onCancelButtonClick}>Отменить</button>
         </li>
         <li className='task-card__buttons-item'>
-          <button className='task-card__cancel-button' type='button'>Отменить редактирование</button>
-        </li>
-        <li className='task-card__buttons-item'>
-          <button className='task-card__remove-button' type='button'>Удалить задачу</button>
+          <button className='task-card__remove-button' type='button' onClick={onRemoveButtonClick}>Удалить</button>
         </li>
       </ul>
     </form>

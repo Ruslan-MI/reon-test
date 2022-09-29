@@ -1,8 +1,11 @@
-import React from 'react';
+import React, {
+  useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import {
   useDispatch,
 } from 'react-redux';
+import dayjs from 'dayjs';
 
 import withTaskEditForm from '../../hocs/with-task-edit-form/with-task-edit-form';
 
@@ -11,6 +14,7 @@ import {
 } from '../../store/actions/page';
 import {
   editTask,
+  removeTask,
 } from '../../store/actions/data';
 import {
   TaskFormActionType,
@@ -25,10 +29,16 @@ const TaskCard = ({
     heading,
     description,
     creationDate,
-    // deadline,
     isComplete,
   },
 }) => {
+  const [
+    localState,
+    setLocalState,
+  ] = useState({
+    isExpanded: false,
+  });
+
   const dispatch = useDispatch();
 
   const onTaskCompleteChange = () => {
@@ -41,6 +51,13 @@ const TaskCard = ({
     }));
   };
 
+  const onExpandButtonClick = () => {
+    setLocalState(() => ({
+      ...localState,
+      isExpanded: !localState.isExpanded,
+    }));
+  };
+
   const onEditButtonClick = () => {
     dispatch(changeTaskFormAction({
       type: TaskFormActionType.EDIT,
@@ -48,12 +65,20 @@ const TaskCard = ({
     }));
   };
 
+  const onRemoveButtonClick = () => {
+    dispatch(removeTask(id));
+  };
+
   return (
     <div className='task-card'>
       <h3 className='task-card__heading'>{heading}</h3>
-      <p className='task-card__description'>{description}</p>
-      <p className='task-card__creation-date'>Дата создания: {creationDate}</p>
-      {/* <p className='task-card__deadline'>{deadline}</p> */}
+      {
+        localState.isExpanded &&
+        <>
+          <p className='task-card__description'>{description}</p>
+          <p className='task-card__creation-date'>Дата создания: {dayjs(creationDate).format('DD.MM.YYYYг. - HH:mm')}</p>
+        </>
+      }
       <div className='task-card__complete-wrapper'>
         <input className='task-card__complete-checkbox' type="checkbox" name="complete" id={`complete-${id}`}
           checked={isComplete} onChange={onTaskCompleteChange}
@@ -62,13 +87,15 @@ const TaskCard = ({
       </div>
       <ul className='task-card__buttons-list'>
         <li className='task-card__buttons-item'>
-          <button className='task-card__expand-button' type='button'>Развернуть</button>
+          <button className='task-card__expand-button' type='button' onClick={onExpandButtonClick}>
+            {localState.isExpanded ? 'Свернуть' : 'Развернуть'}
+          </button>
         </li>
         <li className='task-card__buttons-item'>
           <button className='task-card__edit-button' type='button' onClick={onEditButtonClick}>Редактировать</button>
         </li>
         <li className='task-card__buttons-item'>
-          <button className='task-card__remove-button' type='button'>Удалить</button>
+          <button className='task-card__remove-button' type='button' onClick={onRemoveButtonClick}>Удалить</button>
         </li>
       </ul>
     </div>
