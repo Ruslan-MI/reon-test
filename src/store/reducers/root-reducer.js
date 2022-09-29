@@ -9,7 +9,11 @@ import {
 import {
   reducer as dataReducer,
 } from './data';
+import {
+  reducer as pageReducer,
+} from './page';
 
 export const rootReducer = combineReducers({
   [StoreNameSpace.DATA]: dataReducer,
+  [StoreNameSpace.PAGE]: pageReducer,
 });

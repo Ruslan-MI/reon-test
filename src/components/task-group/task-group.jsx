@@ -13,8 +13,12 @@ import {
 const TaskGroup = () => {
   const {
     taskGroups,
+    taskFormAction: {
+      id: taskFormActionID,
+    }
   } = useSelector((state) => ({
     ...state[StoreNameSpace.DATA],
+    ...state[StoreNameSpace.PAGE],
   }));
 
   const {
@@ -29,7 +33,7 @@ const TaskGroup = () => {
         {
           taskList.map((item) => (
             <li className='task-group__item' key={item.id}>
-              <TaskCard task={item} />
+              <TaskCard task={item} taskFormActionID={taskFormActionID} />
             </li>
           ))
         }
