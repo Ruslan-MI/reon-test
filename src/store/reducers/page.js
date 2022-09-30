@@ -5,12 +5,16 @@ import {
 import {
   changeTaskFormAction,
 } from '../actions/page';
+import {
+  taskGroups,
+} from '../../mocks';
 
 const initialState = {
   taskFormAction: {
     type: null,
     id: null,
   },
+  currentTaskGroupID: localStorage.getItem('tasks') ? JSON.parse(localStorage.getItem('tasks'))[0].id : taskGroups[0].id,
 };
 
 export const reducer = createReducer(initialState, (builder) => {

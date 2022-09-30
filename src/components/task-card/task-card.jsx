@@ -4,6 +4,7 @@ import React, {
 import PropTypes from 'prop-types';
 import {
   useDispatch,
+  useSelector,
 } from 'react-redux';
 import dayjs from 'dayjs';
 
@@ -17,6 +18,7 @@ import {
   removeTask,
 } from '../../store/actions/data';
 import {
+  StoreNameSpace,
   TaskFormActionType,
 } from '../../const';
 import {
@@ -32,6 +34,12 @@ const TaskCard = ({
     isComplete,
   },
 }) => {
+  const {
+    currentTaskGroupID,
+  } = useSelector((state) => ({
+    ...state[StoreNameSpace.PAGE],
+  }));
+
   const [
     localState,
     setLocalState,
@@ -43,11 +51,14 @@ const TaskCard = ({
 
   const onTaskCompleteChange = () => {
     dispatch(editTask({
-      id,
-      heading,
-      description,
-      creationDate,
-      isComplete: !isComplete,
+      task: {
+        id,
+        heading,
+        description,
+        creationDate,
+        isComplete: !isComplete,
+      },
+      currentTaskGroupID,
     }));
   };
 
@@ -66,7 +77,10 @@ const TaskCard = ({
   };
 
   const onRemoveButtonClick = () => {
-    dispatch(removeTask(id));
+    dispatch(removeTask({
+      id,
+      currentTaskGroupID,
+    }));
   };
 
   return (
