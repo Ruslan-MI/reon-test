@@ -6,7 +6,6 @@ import React, {
 import PropTypes from 'prop-types';
 import {
   useDispatch,
-  useSelector,
 } from 'react-redux';
 
 import {
@@ -20,9 +19,6 @@ import {
 import {
   task as taskPropTypes,
 } from '../../prop-types';
-import {
-  StoreNameSpace,
-} from '../../const';
 
 const initialState = {
   heading: '',
@@ -32,13 +28,8 @@ const initialState = {
 const TaskForm = ({
   task,
   isAddNewTask = false,
+  taskGroupID,
 }) => {
-  const {
-    currentTaskGroupID,
-  } = useSelector((state) => ({
-    ...state[StoreNameSpace.PAGE],
-  }));
-
   const [
     localState,
     setLocalState,
@@ -69,12 +60,12 @@ const TaskForm = ({
     if (isAddNewTask) {
       dispatch(addTask({
         task: localState,
-        currentTaskGroupID,
+        taskGroupID,
       }));
     } else {
       dispatch(editTask({
         task: localState,
-        currentTaskGroupID,
+        taskGroupID,
       }));
     }
 
@@ -84,7 +75,7 @@ const TaskForm = ({
   const onRemoveButtonClick = () => {
     dispatch(removeTask({
       id: localState.id,
-      currentTaskGroupID,
+      taskGroupID,
     }));
   };
 
@@ -131,6 +122,7 @@ const TaskForm = ({
 TaskForm.propTypes = {
   task: PropTypes.exact(taskPropTypes),
   isAddNewTask: PropTypes.bool,
+  taskGroupID: PropTypes.string.isRequired,
 };
 
 export default TaskForm;

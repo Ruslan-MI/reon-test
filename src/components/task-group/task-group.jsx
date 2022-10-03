@@ -7,6 +7,7 @@ import {
   useDispatch,
   useSelector,
 } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import TaskCard from '../task-card/task-card';
 import TaskForm from '../task-form/task-form';
@@ -21,18 +22,24 @@ import {
 import {
   changeTaskGroupHeading,
 } from '../../store/actions/data';
+import {
+  task as taskPropTypes,
+} from '../../prop-types';
 
 
-const TaskGroup = () => {
+const TaskGroup = ({
+  taskGroup: {
+    id: taskGroupID,
+    heading,
+    taskList,
+  },
+}) => {
   const {
-    taskGroups,
     taskFormAction: {
       type: taskFormActionType,
       id: taskFormActionID,
     },
-    currentTaskGroupID,
   } = useSelector((state) => ({
-    ...state[StoreNameSpace.DATA],
     ...state[StoreNameSpace.PAGE],
   }));
 
@@ -44,11 +51,6 @@ const TaskGroup = () => {
     isHeadingInput: false,
   });
 
-  const {
-    heading,
-    taskList,
-  } = taskGroups[0];
-
   const headingInputRef = useRef();
   const dispatch = useDispatch();
 
@@ -57,7 +59,7 @@ const TaskGroup = () => {
 
     dispatch(changeTaskGroupHeading({
       heading: headingInputRef.current.value.trim(),
-      currentTaskGroupID,
+      taskGroupID,
     }));
 
     setLocalState(() => ({
@@ -99,7 +101,7 @@ const TaskGroup = () => {
   ]);
 
   return (
-    <section className="task-group">
+    <section className="task-group" id={taskGroupID}>
       {
         localState.isHeadingInput ? (
           <form className='task-group__heading-form' id='heading-form' onSubmit={onFormSubmit}>
@@ -139,13 +141,21 @@ const TaskGroup = () => {
         {
           taskList.map((item) => (
             <li className='task-group__item' key={item.id}>
-              <TaskCard task={item} taskFormActionID={taskFormActionID} />
+              <TaskCard task={item} taskGroupID={taskGroupID} taskFormActionID={taskFormActionID} />
             </li>
           ))
         }
       </ul>
     </section>
   );
+};
+
+TaskGroup.propTypes = {
+  taskGroup: PropTypes.exact({
+    id: PropTypes.string.isRequired,
+    heading: PropTypes.string.isRequired,
+    taskList: PropTypes.arrayOf(PropTypes.exact(taskPropTypes)).isRequired,
+  }),
 };
 
 export default TaskGroup;

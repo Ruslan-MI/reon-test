@@ -1,9 +1,9 @@
 import React from 'react';
 
-import TaskGroup from '../task-group/task-group';
+import Tasks from '../tasks/tasks';
 
 const App = () => (
-  <TaskGroup />
+  <Tasks />
 );
 
 export default App;

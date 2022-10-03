@@ -22,10 +22,10 @@ export const reducer = createReducer(initialState, (builder) => {
   builder.addCase(editTask, (state, action) => {
     const {
       task,
-      currentTaskGroupID,
+      taskGroupID,
     } = action.payload;
 
-    const taskGroupIndex = state.taskGroups.findIndex((item) => item.id === currentTaskGroupID);
+    const taskGroupIndex = state.taskGroups.findIndex((item) => item.id === taskGroupID);
     const taskIndex = state.taskGroups[taskGroupIndex].taskList.findIndex((item) => item.id === task.id);
 
     state.taskGroups = [
@@ -47,10 +47,10 @@ export const reducer = createReducer(initialState, (builder) => {
   builder.addCase(removeTask, (state, action) => {
     const {
       id,
-      currentTaskGroupID,
+      taskGroupID,
     } = action.payload;
 
-    const taskGroupIndex = state.taskGroups.findIndex((item) => item.id === currentTaskGroupID);
+    const taskGroupIndex = state.taskGroups.findIndex((item) => item.id === taskGroupID);
     const taskIndex = state.taskGroups[taskGroupIndex].taskList.findIndex((item) => item.id === id);
 
     state.taskGroups = [
@@ -71,7 +71,7 @@ export const reducer = createReducer(initialState, (builder) => {
   builder.addCase(addTask, (state, action) => {
     const {
       task,
-      currentTaskGroupID,
+      taskGroupID,
     } = action.payload;
 
     const newTask = {
@@ -81,7 +81,7 @@ export const reducer = createReducer(initialState, (builder) => {
       isComplete: false,
     };
 
-    const taskGroupIndex = state.taskGroups.findIndex((item) => item.id === currentTaskGroupID);
+    const taskGroupIndex = state.taskGroups.findIndex((item) => item.id === taskGroupID);
 
     state.taskGroups = [
       ...state.taskGroups.slice(0, taskGroupIndex),
@@ -101,10 +101,10 @@ export const reducer = createReducer(initialState, (builder) => {
   builder.addCase(changeTaskGroupHeading, (state, action) => {
     const {
       heading,
-      currentTaskGroupID,
+      taskGroupID,
     } = action.payload;
 
-    const taskGroupIndex = state.taskGroups.findIndex((item) => item.id === currentTaskGroupID);
+    const taskGroupIndex = state.taskGroups.findIndex((item) => item.id === taskGroupID);
 
     state.taskGroups = [
       ...state.taskGroups.slice(0, taskGroupIndex),
