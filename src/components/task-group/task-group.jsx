@@ -1,5 +1,6 @@
 import React, {
   useEffect,
+  useRef,
   useState,
 } from 'react';
 import {
@@ -17,6 +18,9 @@ import {
 import {
   changeTaskFormAction,
 } from '../../store/actions/page';
+import {
+  changeTaskGroupHeading,
+} from '../../store/actions/data';
 
 
 const TaskGroup = () => {
@@ -25,7 +29,8 @@ const TaskGroup = () => {
     taskFormAction: {
       type: taskFormActionType,
       id: taskFormActionID,
-    }
+    },
+    currentTaskGroupID,
   } = useSelector((state) => ({
     ...state[StoreNameSpace.DATA],
     ...state[StoreNameSpace.PAGE],
@@ -36,6 +41,7 @@ const TaskGroup = () => {
     setLocalState,
   ] = useState({
     isAddNewTask: false,
+    isHeadingInput: false,
   });
 
   const {
@@ -43,7 +49,29 @@ const TaskGroup = () => {
     taskList,
   } = taskGroups[0];
 
+  const headingInputRef = useRef();
   const dispatch = useDispatch();
+
+  const onFormSubmit = (evt) => {
+    evt.preventDefault();
+
+    dispatch(changeTaskGroupHeading({
+      heading: headingInputRef.current.value.trim(),
+      currentTaskGroupID,
+    }));
+
+    setLocalState(() => ({
+      ...localState,
+      isHeadingInput: !localState.isHeadingInput,
+    }));
+  };
+
+  const onChangeHeadingButtonClick = () => {
+    setLocalState(() => ({
+      ...localState,
+      isHeadingInput: !localState.isHeadingInput,
+    }));
+  };
 
   const onAddTaskButtonClick = () => {
     if (!localState.isAddNewTask) {
@@ -62,10 +90,43 @@ const TaskGroup = () => {
     taskFormActionType,
   ]);
 
+  useEffect(() => {
+    if (localState.isHeadingInput) {
+      headingInputRef.current.focus();
+    }
+  }, [
+    localState.isHeadingInput,
+  ]);
+
   return (
     <section className="task-group">
-      <h2 className="task-group__heading">{heading}</h2>
+      {
+        localState.isHeadingInput ? (
+          <form className='task-group__heading-form' id='heading-form' onSubmit={onFormSubmit}>
+            <div className='task-group__heading-input-wrapper'>
+              <label className='task-group__heading-input-label' htmlFor="heading">Введите название списка:</label>
+              <input className='task-group__heading-input' type="text" name="heading" id="heading"
+                defaultValue={heading} ref={headingInputRef}
+              />
+            </div>
+          </form>
+        ) : (
+          <h2 className="task-group__heading">{heading}</h2>
+        )
+      }
       <ul className='task-group__buttons-list'>
+        {
+          localState.isHeadingInput && (
+            <li className='task-group__buttons-item'>
+              <button className='task-group__save-heading-button' type='submit' form='heading-form'>Сохранить</button>
+            </li>
+          )
+        }
+        <li className='task-group__buttons-item'>
+          <button className='task-group__change-heading-button' type='button' onClick={onChangeHeadingButtonClick}>
+            {localState.isHeadingInput ? 'Отменить переименование' : 'Переименовать список'}
+          </button>
+        </li>
         <li className='task-group__buttons-item'>
           <button className='task-group__add-task-button' type='button' onClick={onAddTaskButtonClick}>Добавить новую задачу</button>
         </li>

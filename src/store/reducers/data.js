@@ -8,6 +8,7 @@ import {
   addTask,
   editTask,
   removeTask,
+  changeTaskGroupHeading,
 } from '../actions/data';
 import {
   taskGroups,
@@ -90,6 +91,26 @@ export const reducer = createReducer(initialState, (builder) => {
           ...state.taskGroups[taskGroupIndex].taskList,
           newTask,
         ],
+      },
+      ...state.taskGroups.slice(taskGroupIndex + 1),
+    ];
+
+    localStorage.setItem('tasks', JSON.stringify(state.taskGroups));
+  });
+
+  builder.addCase(changeTaskGroupHeading, (state, action) => {
+    const {
+      heading,
+      currentTaskGroupID,
+    } = action.payload;
+
+    const taskGroupIndex = state.taskGroups.findIndex((item) => item.id === currentTaskGroupID);
+
+    state.taskGroups = [
+      ...state.taskGroups.slice(0, taskGroupIndex),
+      {
+        ...state.taskGroups[taskGroupIndex],
+        heading,
       },
       ...state.taskGroups.slice(taskGroupIndex + 1),
     ];
