@@ -21,7 +21,7 @@ const TaskSearch = () => {
   const dispatch = useDispatch();
 
   const onInputSearchChange = (evt) => {
-    dispatch(changeTaskSearch(evt.target.value.toLowerCase()));
+    dispatch(changeTaskSearch(evt.target.value));
   };
 
   const onResetButtonClick = () => {

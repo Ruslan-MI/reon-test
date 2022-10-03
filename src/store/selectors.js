@@ -14,7 +14,7 @@ export const getSearchFilter = createSelector([
   getTaskSearch,
 ], (taskGroups, taskSearch) => {
   let filteredTaskGroups = taskGroups;
-  const searchString = taskSearch.trim();
+  const searchString = taskSearch.trim().toLowerCase();
 
   if (taskSearch.length) {
     filteredTaskGroups = taskGroups.map((item) => ({
