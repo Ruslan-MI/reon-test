@@ -67,9 +67,8 @@ const TaskGroup = ({
       taskGroupID,
     }));
 
-    setLocalState(() => ({
-      ...localState,
-      isHeadingInput: !localState.isHeadingInput,
+    dispatch(changeTaskGroupHeadingAction({
+      id: null,
     }));
   };
 
