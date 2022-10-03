@@ -15,6 +15,8 @@ import {
 
 import reportWebVitals from './reportWebVitals';
 
+history.pushState(null, null, '/');
+
 const root = ReactDOM.createRoot(document.querySelector('#root'));
 
 const store = configureStore({
