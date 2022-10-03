@@ -22,6 +22,7 @@ import {
 } from '../../store/actions/page';
 import {
   changeTaskGroupHeading,
+  removeTaskGroup,
 } from '../../store/actions/data';
 import {
   task as taskPropTypes,
@@ -73,8 +74,20 @@ const TaskGroup = ({
   };
 
   const onChangeHeadingButtonClick = () => {
-    dispatch(changeTaskGroupHeadingAction({
-      id: taskGroupID,
+    if (localState.isHeadingInput) {
+      dispatch(changeTaskGroupHeadingAction({
+        id: null,
+      }));
+    } else {
+      dispatch(changeTaskGroupHeadingAction({
+        id: taskGroupID,
+      }));
+    }
+  };
+
+  const onRemoveButtonClick = () => {
+    dispatch(removeTaskGroup({
+      taskGroupID,
     }));
   };
 
@@ -82,6 +95,7 @@ const TaskGroup = ({
     if (!localState.isAddNewTask) {
       dispatch(changeTaskFormAction({
         type: TaskFormActionType.ADD,
+        id: taskGroupID,
       }));
     }
   };
@@ -89,7 +103,7 @@ const TaskGroup = ({
   useEffect(() => {
     setLocalState(() => ({
       ...localState,
-      isAddNewTask: taskFormActionType === TaskFormActionType.ADD,
+      isAddNewTask: taskFormActionType === TaskFormActionType.ADD && taskFormActionID === taskGroupID,
     }));
   }, [
     taskFormActionType,
@@ -142,12 +156,15 @@ const TaskGroup = ({
           </button>
         </li>
         <li className='task-group__buttons-item'>
+          <button className='task-group__remove-button' type='button' onClick={onRemoveButtonClick}>Удалить список</button>
+        </li>
+        <li className='task-group__buttons-item'>
           <button className='task-group__add-task-button' type='button' onClick={onAddTaskButtonClick}>Добавить новую задачу</button>
         </li>
       </ul>
       {
         localState.isAddNewTask &&
-        <TaskForm isAddNewTask={localState.isAddNewTask} />
+        <TaskForm isAddNewTask={localState.isAddNewTask} taskGroupID={taskGroupID} />
       }
       {
         taskList.length ? (

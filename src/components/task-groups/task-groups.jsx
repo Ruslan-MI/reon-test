@@ -20,21 +20,27 @@ const TaskGroups = ({
   return (
     <section className="task-groups">
       <h2 className="task-groups__heading">Списки задач</h2>
-      <ul className="task-groups__list">
-        {
-          taskGroups.map(({
-            id,
-            heading,
-          }) => (
-            <li className="task-groups__item" key={id}>
-              <a className="task-groups__link" href={`#${id}`}>{heading}</a>
-            </li>
-          ))
-        }
-      </ul>
+      {
+        taskGroups.length ? (
+          <ul className="task-groups__list">
+            {
+              taskGroups.map(({
+                id,
+                heading,
+              }) => (
+                <li className="task-groups__item" key={id}>
+                  <a className="task-groups__link" href={`#${id}`}>{heading}</a>
+                </li>
+              ))
+            }
+          </ul>
+        ) : (
+          <p className="task-groups__stub">Добавьте новый список.</p>
+        )
+      }
       <ul className='task-groups__buttons-list'>
         <li className='task-groups__buttons-list'>
-          <button className='task-groups__add-task-group-button' type='button' onClick={onAddTaskGroupButtonClick}>Создать новый список</button>
+          <button className='task-groups__add-task-group-button' type='button' onClick={onAddTaskGroupButtonClick}>Добавить новый список</button>
         </li>
       </ul>
     </section>

@@ -10,6 +10,7 @@ import {
   removeTask,
   changeTaskGroupHeading,
   addTaskGroup,
+  removeTaskGroup,
 } from '../actions/data';
 import {
   taskGroups,
@@ -127,6 +128,21 @@ export const reducer = createReducer(initialState, (builder) => {
         taskList: [],
       },
       ...state.taskGroups,
+    ];
+
+    localStorage.setItem('tasks', JSON.stringify(state.taskGroups));
+  });
+
+  builder.addCase(removeTaskGroup, (state, action) => {
+    const {
+      taskGroupID,
+    } = action.payload;
+
+    const taskGroupIndex = state.taskGroups.findIndex((item) => item.id === taskGroupID);
+
+    state.taskGroups = [
+      ...state.taskGroups.slice(0, taskGroupIndex),
+      ...state.taskGroups.slice(taskGroupIndex + 1),
     ];
 
     localStorage.setItem('tasks', JSON.stringify(state.taskGroups));

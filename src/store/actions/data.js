@@ -12,6 +12,7 @@ const ActionType = {
   ADD_TASK: `${StoreNameSpace.DATA}/addTask`,
   CHANGE_TASK_GROUP_HEADING: `${StoreNameSpace.DATA}/changeTaskGroupHeading`,
   ADD_TASK_GROUP: `${StoreNameSpace.DATA}/addTaskGroup`,
+  REMOVE_TASK_GROUP: `${StoreNameSpace.DATA}/removeTaskGroup`,
 };
 
 export const editTask = createAction(ActionType.EDIT_TASK, (data) => ({
@@ -31,3 +32,7 @@ export const changeTaskGroupHeading = createAction(ActionType.CHANGE_TASK_GROUP_
 }));
 
 export const addTaskGroup = createAction(ActionType.ADD_TASK_GROUP);
+
+export const removeTaskGroup = createAction(ActionType.REMOVE_TASK_GROUP, (data) => ({
+  payload: data,
+}));
