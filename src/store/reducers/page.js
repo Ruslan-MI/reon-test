@@ -4,11 +4,15 @@ import {
 
 import {
   changeTaskFormAction,
+  changeTaskGroupHeadingAction,
 } from '../actions/page';
 
 const initialState = {
   taskFormAction: {
     type: null,
+    id: null,
+  },
+  taskGroupHeadingAction: {
     id: null,
   },
 };
@@ -29,5 +33,9 @@ export const reducer = createReducer(initialState, (builder) => {
       type,
       id,
     };
+  });
+
+  builder.addCase(changeTaskGroupHeadingAction, (state, action) => {
+    state.taskGroupHeadingAction.id = action.payload.id;
   });
 });

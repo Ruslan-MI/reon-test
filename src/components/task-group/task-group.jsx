@@ -18,6 +18,7 @@ import {
 } from '../../const';
 import {
   changeTaskFormAction,
+  changeTaskGroupHeadingAction,
 } from '../../store/actions/page';
 import {
   changeTaskGroupHeading,
@@ -38,6 +39,9 @@ const TaskGroup = ({
     taskFormAction: {
       type: taskFormActionType,
       id: taskFormActionID,
+    },
+    taskGroupHeadingAction: {
+      id: taskGroupHeadingActionID,
     },
   } = useSelector((state) => ({
     ...state[StoreNameSpace.PAGE],
@@ -69,9 +73,8 @@ const TaskGroup = ({
   };
 
   const onChangeHeadingButtonClick = () => {
-    setLocalState(() => ({
-      ...localState,
-      isHeadingInput: !localState.isHeadingInput,
+    dispatch(changeTaskGroupHeadingAction({
+      id: taskGroupID,
     }));
   };
 
@@ -93,6 +96,15 @@ const TaskGroup = ({
   ]);
 
   useEffect(() => {
+    setLocalState(() => ({
+      ...localState,
+      isHeadingInput: taskGroupHeadingActionID === taskGroupID,
+    }));
+  }, [
+    taskGroupHeadingActionID,
+  ]);
+
+  useEffect(() => {
     if (localState.isHeadingInput) {
       headingInputRef.current.focus();
     }
@@ -108,7 +120,7 @@ const TaskGroup = ({
             <div className='task-group__heading-input-wrapper'>
               <label className='task-group__heading-input-label' htmlFor="heading">Введите название списка:</label>
               <input className='task-group__heading-input' type="text" name="heading" id="heading"
-                defaultValue={heading} ref={headingInputRef}
+                defaultValue={heading} ref={headingInputRef} required
               />
             </div>
           </form>
