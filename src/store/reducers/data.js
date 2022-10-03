@@ -9,6 +9,7 @@ import {
   editTask,
   removeTask,
   changeTaskGroupHeading,
+  addTaskGroup,
 } from '../actions/data';
 import {
   taskGroups,
@@ -113,6 +114,19 @@ export const reducer = createReducer(initialState, (builder) => {
         heading,
       },
       ...state.taskGroups.slice(taskGroupIndex + 1),
+    ];
+
+    localStorage.setItem('tasks', JSON.stringify(state.taskGroups));
+  });
+
+  builder.addCase(addTaskGroup, (state) => {
+    state.taskGroups = [
+      {
+        id: nanoid(),
+        heading: 'Новый список задач',
+        taskList: [],
+      },
+      ...state.taskGroups,
     ];
 
     localStorage.setItem('tasks', JSON.stringify(state.taskGroups));

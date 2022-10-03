@@ -137,15 +137,21 @@ const TaskGroup = ({
         localState.isAddNewTask &&
         <TaskForm isAddNewTask={localState.isAddNewTask} />
       }
-      <ul className='task-group__list'>
-        {
-          taskList.map((item) => (
-            <li className='task-group__item' key={item.id}>
-              <TaskCard task={item} taskGroupID={taskGroupID} taskFormActionID={taskFormActionID} />
-            </li>
-          ))
-        }
-      </ul>
+      {
+        taskList.length ? (
+          <ul className='task-group__list'>
+            {
+              taskList.map((item) => (
+                <li className='task-group__item' key={item.id}>
+                  <TaskCard task={item} taskGroupID={taskGroupID} taskFormActionID={taskFormActionID} />
+                </li>
+              ))
+            }
+          </ul>
+        ) : (
+          <p className='task-group__stup'>Добавьте новую задачу.</p>
+        )
+      }
     </section>
   );
 };
