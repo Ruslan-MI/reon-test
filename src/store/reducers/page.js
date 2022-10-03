@@ -5,6 +5,7 @@ import {
 import {
   changeTaskFormAction,
   changeTaskGroupHeadingAction,
+  changeTaskSearch,
 } from '../actions/page';
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
   taskGroupHeadingAction: {
     id: null,
   },
+  taskSearch: '',
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -37,5 +39,9 @@ export const reducer = createReducer(initialState, (builder) => {
 
   builder.addCase(changeTaskGroupHeadingAction, (state, action) => {
     state.taskGroupHeadingAction.id = action.payload.id;
+  });
+
+  builder.addCase(changeTaskSearch, (state, action) => {
+    state.taskSearch = action.payload;
   });
 });
